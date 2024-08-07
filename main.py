@@ -1,6 +1,17 @@
 import os
 import google.generativeai as genai
 import discord
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+@app.route('/api', methods=['GET'])
+def get_data():
+    response = {
+        'message': 'Hello, World!',
+        'status': 'success'
+    }
+    return jsonify(response)
 
 genai.configure(api_key=os.environ["GEN_KEY"])
 
@@ -25,3 +36,5 @@ async def on_message(message):
     if message.channel.id == 1270035200100925510 and message.content.startswith("ask"):
         await message.channel.send(response_generate(message.content))
 client.run(DISCORD_KEY)
+if __name__ == '__main__':
+    app.run(port=5000)
